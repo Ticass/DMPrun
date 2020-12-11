@@ -14,6 +14,8 @@ public class CameraController : MonoBehaviour
     private float halfHeight;
     private float halfWidth;
 
+    [SerializeField] PlayerMovement thePlayer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +31,7 @@ public class CameraController : MonoBehaviour
         topRightLimit = theMap.localBounds.max + new Vector3(-halfWidth, -halfHeight, 0f);
 
         //keep the player inside the map
-        // PlayerController.instance.SetBounds(theMap.localBounds.min, theMap.localBounds.max);
+        thePlayer.SetBounds(theMap.localBounds.min, theMap.localBounds.max);
     }
 
     // LateUpdate is called once per frame after Update
@@ -37,8 +39,8 @@ public class CameraController : MonoBehaviour
     {
         transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
 
-        //keep the camera inside the bounds
+        //keep the camera inside the bounds (Inside the tilemap)
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, bottomLeftLimit.x, topRightLimit.x),
-                                         Mathf.Clamp(transform.position.y, bottomLeftLimit.y, topRightLimit.y), transform.position.z);
+                                         Mathf.Clamp(transform.position.y, bottomLeftLimit.y + 2, topRightLimit.y), transform.position.z);
     }
 }
