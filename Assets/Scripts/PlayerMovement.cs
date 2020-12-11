@@ -11,10 +11,15 @@ public class PlayerMovement : MonoBehaviour
     public Transform Feet;
     public LayerMask groundLayers;
     public Animator anim;
+    public GameObject playerPrefab;
+    public float degreesPerSec = 360f;
 
      private void Update()
     {
         mx = Input.GetAxisRaw("Horizontal");
+
+       TurnLeft();
+        
         
         if (Input.GetButtonDown("Jump") && IsGrounded()) {
             Jump();
@@ -48,6 +53,10 @@ public class PlayerMovement : MonoBehaviour
             return true;
         } 
         return false;
+    }
+
+    public void TurnLeft(){
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
 }
