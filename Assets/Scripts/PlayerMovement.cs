@@ -14,11 +14,14 @@ public class PlayerMovement : MonoBehaviour
     public GameObject playerPrefab;
     public float degreesPerSec = 360f;
 
-     private void Update()
+    private Vector3 bottomLeftLimit;
+    private Vector3 topRightLimit;
+
+    private void Update()
     {
         mx = Input.GetAxisRaw("Horizontal");
 
-       TurnLeft();
+       //TurnLeft();
         
         
         if (Input.GetButtonDown("Jump") && IsGrounded()) {
@@ -32,6 +35,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         anim.SetBool("IsGrounded", IsGrounded());
+
+        //keep the player inside the map
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, bottomLeftLimit.x, topRightLimit.x),
+                                         Mathf.Clamp(transform.position.y, bottomLeftLimit.y, topRightLimit.y), transform.position.z);
     }
 
     private void FixedUpdate()
@@ -59,4 +66,10 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
+    //keep the player inside the map
+    public void SetBounds(Vector3 botLeft, Vector3 topRight)
+    {
+        bottomLeftLimit = botLeft + new Vector3(.5f, .75f, 0f);
+        topRightLimit = topRight + new Vector3(-.5f, -.75f, 0f);
+    }
 }
